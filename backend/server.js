@@ -4,7 +4,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 require('dotenv').config();
 const app = express();
-const port = 3000; // Define el puerto del servidor
 const mongoose = require('mongoose');
 
 app.use(express.json());
@@ -17,7 +16,7 @@ const startServer = async () => {
     //Conect Database
     await mongoose.connect(process.env.MONGO_URI )
     //setings
-    app.listen(process.env.PORT || port, () => console.log('Listening'));
+    app.listen(process.env.PORT, () => console.log('Listening'));
 }
 startServer();
 
