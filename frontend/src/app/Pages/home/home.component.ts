@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ThematicService } from '../../services/thematic.service';
 import { FilesService } from '../../services/files.service';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,20 +12,24 @@ import { AuthService } from '../../services/auth.service';
 export class HomeComponent implements OnInit {
   searchText: any
   typeUser: string = ''
+  showFilter: boolean = false;
+
   constructor(
     private thematicService: ThematicService,
     private filesService: FilesService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   temas: string[] = []
   contentMath: any[] = []
   contentSport: any[] = []
   contentCie: any[] = []
+  contentFilter: any[] = []
 
   ngOnInit() {
     const user = this.authService.returnUser()
-    this.typeUser = user.tipoUsuario
+    this.typeUser = user.tipoUsuario || "NA"
 
     this.thematicService.get().subscribe(
       (response) => {
@@ -46,16 +51,29 @@ export class HomeComponent implements OnInit {
   }
 
   onSearch() {
-
+    this.showFilter = true
+    this.filesService.getByName(this.searchText).subscribe(
+      (response) => {
+        if (response.success) {
+          this.contentFilter = response.collection
+        }
+      }
+    )
   }
 
   find(tema: any) {
-    console.log(tema)
+    this.showFilter = true
+    this.filesService.getThematic(tema).subscribe(
+      (response) => {
+        if (response.success) {
+          this.contentFilter = response.collection
+        }
+      }
+    )
   }
 
   showContent(item: any) {
-
-    if(!this.authService.isAuthenticated()){
+    if (!this.authService.isAuthenticated()) {
       alert('No se ha iniciado sesion')
     }
 
@@ -93,6 +111,34 @@ export class HomeComponent implements OnInit {
       )
     }
 
+  }
+
+  edit(item: any) {
+    console.log(item);
+    this.router.navigate(['edit', item._id], { queryParams: { id: item._id } });
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+
+  delete(item: any) {
+    this.filesService.delete(item._id).subscribe(
+      (response) => {
+        if (response.success) {
+          alert('Archivo eliminado')
+          this.filesService.get('').subscribe(
+            (response) => {
+              if (response.success) {
+                this.contentMath = response.collection.filter((f: any) => { return f.tematica == 'matematicas' })
+                this.contentSport = response.collection.filter((f: any) => { return f.tematica == 'deportes' })
+                this.contentCie = response.collection.filter((f: any) => { return f.tematica == 'ciencias' })
+              }
+            }
+          )
+        }
+      }
+    )
   }
 
 }

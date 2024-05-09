@@ -126,9 +126,9 @@ export class CreateFilesComponent implements OnInit {
     this.fileService.createFile(formData).subscribe(
       (response) => {
         if (response.success) {
-          alert('Imagen creada con exito')
+          alert('Archivo creado con exito')
         } else {
-          alert('La imagen no se creo')
+          alert('El archivo no se creo')
 
         }
       }

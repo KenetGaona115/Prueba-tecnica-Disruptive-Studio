@@ -17,6 +17,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import { RegisterComponent } from './register/register.component';
 import {MatSelectModule} from '@angular/material/select';
 import { CreateFilesComponent } from './createFiles/createFiles.component';
+import { EditFilesComponent } from './editFiles/editFiles.component';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { CreateFilesComponent } from './createFiles/createFiles.component';
     HomeComponent,
     RegisterComponent,
     CreateFilesComponent,
+    EditFilesComponent
   ]
 })
 export class PagesModule { }

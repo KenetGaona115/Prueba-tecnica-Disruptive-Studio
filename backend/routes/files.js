@@ -28,6 +28,21 @@ router.post('/', upload.array('files'), async function (req, res) {
     }
 })
 
+router.put('/:id?', upload.array('files'), async function (req, res) {
+    try {
+        const id = req.query.id
+        console.log(id)
+        const body = JSON.parse(req.body.values);
+        console.log(body)
+
+        const result = await FileController.update({ _id: id }, { ...body, url: req?.filename ? req.filename : body.url })
+        return res.send({ success: true, message: "Actualizado" });
+    } catch (error) {
+        console.log(error)
+        return res.send({ success: false, message: error.message });
+    }
+})
+
 router.get('/view/:url?', (req, res) => {
     try {
         const url = req.query.url;
@@ -42,6 +57,28 @@ router.get('/view/:url?', (req, res) => {
     }
 })
 
+router.get('/one/:id?', async (req, res) => {
+    try {
+        const id = req.query.id;
+        const content = await FileController.findOne({ _id: id })
+        return res.json({ success: true, content })
+    } catch (error) {
+        return res.send({ success: false, message: error.message });
+    }
+})
+
+router.get('/nombre/:nombre?', async (req, res) => {
+    try {
+        const query = req.query.nombre
+        const searchRegExp = query.replace(/\s/g, '\\s*');
+        const collection = await FileController.findAll({ $and: [{ titulo: { $regex: new RegExp(searchRegExp, "i") } },] });
+        return res.json({ success: true, collection })
+    } catch (error) {
+        console.log(error)
+        return res.send({ success: false, message: error.message });
+    }
+})
+
 router.get('/:tema?', async (req, res) => {
     try {
         const query = req.query.tema
@@ -52,6 +89,17 @@ router.get('/:tema?', async (req, res) => {
             collection = await FileController.findAll()
         }
         return res.json({ success: true, collection })
+    } catch (error) {
+        console.log(error)
+        return res.send({ success: false, message: error.message });
+    }
+})
+
+router.delete('/:id?', async (req, res) => {
+    try {
+        const id = req.query.id
+        await FileController.delete({ _id: id })
+        return res.json({ success: true })
     } catch (error) {
         console.log(error)
         return res.send({ success: false, message: error.message });
