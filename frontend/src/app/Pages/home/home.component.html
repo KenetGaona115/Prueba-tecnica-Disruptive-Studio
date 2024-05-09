@@ -34,7 +34,7 @@
         </mat-card-content>
         <mat-card-actions>
           <button mat-button (click)="showContent(item)">VER</button>
-          <button mat-button *ngIf="typeUser != 'lector' ">EDITAR</button>
+          <button mat-button *ngIf="typeUser != 'lector' "(click)="edit(item)">EDITAR</button>
           <button mat-button *ngIf="typeUser == 'admin'" (click)="delete(item)">ELIMINAR</button>
         </mat-card-actions>
       </mat-card>

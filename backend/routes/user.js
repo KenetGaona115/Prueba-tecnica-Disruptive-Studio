@@ -2,6 +2,18 @@ const express = require('express');
 const router = express.Router();
 const UserController = require('../database/controller/user.controller')
 
+/**
+ * POST / (Crear nuevo usuario)
+ *
+ * Este endpoint crea un nuevo usuario, pero primero verifica si ya existe un usuario con el mismo correo electrónico o alias.
+ *
+ * Inputs:
+ * - req.body: Un objeto que contiene los datos del usuario a crear, como `email` y `alias`.
+ *
+ * Outputs:
+ * - res.json(): Devuelve un objeto JSON con una propiedad `success` (boolean) que indica si la operación tuvo éxito,
+ *   y una propiedad `user` (objeto) con información sobre el nuevo usuario creado, o una propiedad `message` con información sobre errores.
+ */
 router.post('/', async (req, res) => {
     try {
         const body = req.body;

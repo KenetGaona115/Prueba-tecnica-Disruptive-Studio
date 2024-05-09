@@ -123,7 +123,8 @@ export class HomeComponent implements OnInit {
   }
 
   delete(item: any) {
-    this.filesService.delete(item._id).subscribe(
+    const user = this.authService.returnUser()
+    this.filesService.delete(item._id, user.email).subscribe(
       (response) => {
         if (response.success) {
           alert('Archivo eliminado')

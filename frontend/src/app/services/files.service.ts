@@ -39,8 +39,8 @@ export class FilesService {
         return this.http.get<File | any>(this.URL + 'files/view/', { params: { url } })
     }
 
-    delete(id: any) {
-        return this.http.delete<any>(this.URL + 'files/', { params: { id } })
+    delete(id: any, email: any) {
+        return this.http.delete<any>(this.URL + 'files/', { params: { id, email } })
     }
 
 }

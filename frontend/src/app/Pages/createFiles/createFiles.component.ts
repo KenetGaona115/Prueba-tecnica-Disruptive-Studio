@@ -81,9 +81,11 @@ export class CreateFilesComponent implements OnInit {
 
   }
   onSubmitThematic() {
+    const user = this.authService.returnUser()
     const vls = {
       nombre: this.registerFormThematic.get('nombre').value,
-      categorias: this.registerFormThematic.get('categorias').value
+      categorias: this.registerFormThematic.get('categorias').value,
+      email: user.email,
     }
     this.thematicService.create(vls).subscribe(
       (respose) => {
@@ -110,6 +112,7 @@ export class CreateFilesComponent implements OnInit {
   }
 
   onSubmitFile() {
+    const user = this.authService.returnUser()
     const formData = new FormData();
     if (this.eventFile) {
       formData.append("files", this.eventFile);
@@ -122,7 +125,11 @@ export class CreateFilesComponent implements OnInit {
       url: this.registerFormFiles.get('url').value,
       creador: this.authService.returnUser().alias
     }
+    const email = {
+      email: user.email
+    }
     formData.append("values", JSON.stringify(vls))
+    formData.append("email", JSON.stringify(email))
     this.fileService.createFile(formData).subscribe(
       (response) => {
         if (response.success) {

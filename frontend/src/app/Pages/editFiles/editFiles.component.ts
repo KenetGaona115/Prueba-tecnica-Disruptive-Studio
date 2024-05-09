@@ -87,6 +87,7 @@ export class EditFilesComponent implements OnInit {
   }
 
   onSubmitFile() {
+    const user = this.authService.returnUser()
     const formData = new FormData();
     if (this.eventFile) {
       formData.append("files", this.eventFile);
@@ -99,7 +100,11 @@ export class EditFilesComponent implements OnInit {
       url: this.registerFormFiles.get('url').value,
       creador: this.authService.returnUser().alias
     }
+    const email = {
+      email: user.email
+    }
     formData.append("values", JSON.stringify(vls))
+    formData.append("email", JSON.stringify(email))
     this.fileService.updateFile(formData, this.id).subscribe(
       (response) => {
         if (response.success) {
