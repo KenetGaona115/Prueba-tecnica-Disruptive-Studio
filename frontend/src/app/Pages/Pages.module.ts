@@ -13,6 +13,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { RouterModule } from '@angular/router';
+import {MatChipsModule} from '@angular/material/chips';
+import { RegisterComponent } from './register/register.component';
+import {MatSelectModule} from '@angular/material/select';
+import { CreateFilesComponent } from './createFiles/createFiles.component';
 
 @NgModule({
   imports: [
@@ -28,10 +32,14 @@ import { RouterModule } from '@angular/router';
     MatSidenavModule,
     MatListModule,
     RouterModule,
+    MatChipsModule,
+    MatSelectModule,
   ],
   declarations: [
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    RegisterComponent,
+    CreateFilesComponent,
   ]
 })
 export class PagesModule { }

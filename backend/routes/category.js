@@ -1,21 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const CategoryController = require('../database/controller/category.controller')
+const { PERMISSIONS_MIDDLEWARE } = require('../middleware/permission')
 
-router.post('/', async (req, res) => {
+router.post('/', PERMISSIONS_MIDDLEWARE, async (req, res) => {
     try {
         const body = req.body;
         const validate = await CategoryController.findOne({ nombre: body.nombre });
         if (validate)
             return res.json({ success: false, message: 'La categoria ya existe' });
-        const cat = await CategoryController.create(req.body);
-        return res.json({ succes: true, categoria: cat });
+        if (body.userType === 'admin') {
+            const cat = await CategoryController.create({ nombre: body.nombre });
+            return res.json({ success: true, categoria: cat });
+        } else {
+            return res.json({ success: false, message: 'El usuario no es de tipo admin', status: 403 });
+        }
     } catch (error) {
         console.error(error);
         return res.json({ success: false, error: 'Error al crear usuario' });
     }
 });
-router.put('/:id?', async (req, res) => {
+router.put('/:id?', PERMISSIONS_MIDDLEWARE, async (req, res) => {
     try {
         const id = req.query.id;
 
@@ -23,8 +28,12 @@ router.put('/:id?', async (req, res) => {
             return res.send({ message: "Id de categoria invalido" })
 
         const body = req.body;
-        const cat = CategoryController.update({ _id: _id }, body);;
-        return res.json({ succes: true, categoria: cat });
+        if (body.userType === 'admin') {
+            const cat = CategoryController.update({ _id: _id }, body);
+            return res.json({ success: true, categoria: cat });
+        } else {
+            return res.json({ success: false, message: 'La categoria ya existe', status: 403 });
+        }
     } catch (error) {
         console.error(error);
         return res.json({ success: false, error: 'Error al crear usuario' });
@@ -34,20 +43,24 @@ router.put('/:id?', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const collection = await CategoryController.findAll();
-        return res.json({ succes: true, categoria: collection });
+        return res.json({ success: true, categoria: collection });
     } catch (error) {
         console.error(error);
         return res.json({ success: false, error: 'Error al crear usuario' });
     }
 });
 
-router.delete('/:id?', async (req, res) => {
+router.delete('/:id?', PERMISSIONS_MIDDLEWARE, async (req, res) => {
     try {
         const id = req.query.id
         if (!id)
             return res.send({ message: "Id de categoria invalido" })
-        await CategoryController.delete({ _id: id });
-        return res.json({ succes: true, message: "Categoria eliminada" });
+        if (body.userType === 'admin') {
+            await CategoryController.delete({ _id: id });
+            return res.json({ success: true, message: "Categoria eliminada" });
+        } else {
+            return res.json({ success: false, message: 'La categoria ya existe', status: 403 });
+        }
     } catch (error) {
         console.error(error);
         return res.json({ success: false, error: 'Error al crear usuario' });

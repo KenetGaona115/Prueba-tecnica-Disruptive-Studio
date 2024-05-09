@@ -9,44 +9,23 @@ const contenidoSchema = new mongoose.Schema({
     type: String,
   },
   categoria: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Categoria',
+    type: String,
     required: true,
   },
   tematica: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Tematica',
-    required: true,
-  },
-  tipoContenido: {
     type: String,
-    enum: ['imagen', 'video', 'texto'],
     required: true,
   },
   url: {
     type: String,
-    required: function () {
-      return this.tipoContenido === 'imagen' || this.tipoContenido === 'video';
-    },
-  },
-  texto: {
-    type: String,
-    required: function () {
-      return this.tipoContenido === 'texto';
-    },
   },
   fechaCreacion: {
     type: Date,
     default: Date.now,
   },
   creador: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Usuario',
+    type: String,
     required: true,
-  },
-  visitas: {
-    type: Number,
-    default: 0,
   },
 });
 

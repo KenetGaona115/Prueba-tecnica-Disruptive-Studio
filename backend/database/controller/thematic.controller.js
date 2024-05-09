@@ -9,6 +9,9 @@ class ThematicController {
     async findOne(filter) {
         return await Thematic.findOne(filter)
     }
+    async findAll(filter) {
+        return await Thematic.find(filter)
+    }
 
     async update(filter, data) {
         return await Thematic.findOneAndUpdate(filter, data)

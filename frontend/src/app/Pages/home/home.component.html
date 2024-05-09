@@ -1,13 +1,92 @@
 <mat-toolbar color="primary">
   <span>Disruptive Studio</span>
   <span class="spacer"></span>
-  <button mat-button routerLink="/">Inicio</button>
-  <button mat-button routerLink="/about">About</button>
+  <button mat-button routerLink="/files">Contenido</button>
+  <button mat-button routerLink="/about">Cerrar sesion</button>
 </mat-toolbar>
 
-<mat-form-field appearance="fill">
-  <mat-label>Search</mat-label>
-  <input matInput type="text" [(ngModel)]="searchText" (keyup.enter)="onSearch()">
-</mat-form-field>
+<mat-card class="panel">
+  <mat-form-field class="full-width">
+    <mat-label>Buscar</mat-label>
+    <input matInput type="text" [(ngModel)]="searchText" (keyup.enter)="onSearch()">
+  </mat-form-field>
+  <div class="chips">
+    <mat-chip-set aria-label="Fish selection">
+      <mat-chip *ngFor="let tema of temas" (click)="find(tema)">{{tema}} </mat-chip>
+    </mat-chip-set>
+  </div>
+</mat-card>
+
+<h1 style="text-align: center">CIENCIAS</h1>
+<section class="layout">
+  <div class="item-file" *ngFor="let item of contentCie">
+    <mat-card class="file-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{item.titulo}}</mat-card-title>
+        <mat-card-subtitle>{{item.creador}}</mat-card-subtitle>
+      </mat-card-header>
+      <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+      <mat-card-content>
+        <p>
+          {{item.descripcion}}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="showContent(item)">VER</button>
+        <button mat-button *ngIf="typeUser != 'lector' ">EDITAR</button>
+        <button mat-button *ngIf="typeUser == 'admin'">ELIMINAR</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</section>
+
+<h1 style="text-align: center">MATEMATICAS</h1>
+<section class="layout">
+  <div class="item-file" *ngFor="let item of contentMath">
+    <mat-card class="file-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{item.titulo}}</mat-card-title>
+        <mat-card-subtitle>{{item.creador}}</mat-card-subtitle>
+      </mat-card-header>
+      <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+      <mat-card-content>
+        <p>
+          {{item.descripcion}}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="showContent(item)">VER</button>
+        <button mat-button *ngIf="typeUser != 'lector' ">EDITAR</button>
+        <button mat-button *ngIf="typeUser == 'admin'">ELIMINAR</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</section>
+
+<h1 style="text-align: center">DEPORTES</h1>
+<section class="layout">
+  <div class="item-file" *ngFor="let item of contentSport">
+    <mat-card class="file-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{item.titulo}}</mat-card-title>
+        <mat-card-subtitle>{{item.creador}}</mat-card-subtitle>
+      </mat-card-header>
+      <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+      <mat-card-content>
+        <p>
+          {{item.descripcion}}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="showContent(item)">VER</button>
+        <button mat-button *ngIf="typeUser != 'lector' ">EDITAR</button>
+        <button mat-button *ngIf="typeUser == 'admin'">ELIMINAR</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</section>
 
 <router-outlet></router-outlet>

@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
         if (validate)
             return res.json({ success: false, message: 'El tema ya existe' });
         const tematica = await ThematicController.create(req.body);
-        return res.json({ succes: true, tema: tematica });
+        return res.json({ success: true, tema: tematica });
     } catch (error) {
         console.error(error);
         return res.json({ success: false, error: 'Error al crear tematica' });
@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const collection = await ThematicController.findAll();
-        return res.json({ succes: true, temas: collection });
+        return res.json({ success: true, temas: collection });
     } catch (error) {
         console.error(error);
         return res.json({ success: false, error: 'Error al obtener tematicas' });

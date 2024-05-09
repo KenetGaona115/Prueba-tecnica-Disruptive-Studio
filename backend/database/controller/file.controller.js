@@ -9,6 +9,9 @@ class FileController {
     async findOne(filter){
         return await File.findOne(filter)
     }
+    async findAll(filter){
+        return await File.find(filter)
+    }
 
     async update(filter, data) {
         return await File.findOneAndUpdate(filter, data)
